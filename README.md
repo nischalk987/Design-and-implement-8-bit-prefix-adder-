@@ -96,6 +96,17 @@ flowchart TD
 
 **Data path:** Current count → zero extension → prefix adder (+1) → RUN/HOLD MUX → counter register → 7-segment decoder → display.
 
+## FSM State Diagram
+
+```mermaid
+stateDiagram-v2
+    [*] --> RUN: Reset
+    RUN --> RUN: run = 1
+    RUN --> HOLD: run = 0
+    HOLD --> HOLD: run = 0
+    HOLD --> RUN: run = 1
+```
+
 ## GTKWave Waveform Evidence
 
 The following GTKWave screenshots are placed immediately after the System Architecture section for project presentation.
