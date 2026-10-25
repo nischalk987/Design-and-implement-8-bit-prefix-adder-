@@ -57,22 +57,6 @@ The full-system testbench completed successfully.
 - **Reset priority:** reset correctly took priority over RUN.
 - **Final testbench status:** `ALL FULL-SYSTEM AND PREFIX-ADDER TESTS PASSED`.
 
-## GTKWave Waveform Evidence
-
-The following screenshots are from the GTKWave simulation and show the counter integration and complete system behavior.
-
-### Counter Waveform
-
-![Counter waveform](images/Counter-waveform.png)
-
-The counter waveform demonstrates reset, RUN incrementing, HOLD retaining the current count, and the counter continuing after RUN resumes.
-
-### Full-System Waveform
-
-![Full-system waveform](images/Full_system.png)
-
-The full-system waveform includes the 8-bit prefix-adder inputs and output, clock, counter, expected values, FSM state, reset, RUN control, run enable, and seven-segment output. The displayed trace shows the count sequence and corresponding display changes.
-
 ## Verification Plan
 
 1. Test the 8-bit prefix adder independently with representative inputs, carry propagation, and overflow.
@@ -86,7 +70,7 @@ The full-system waveform includes the 8-bit prefix-adder inputs and output, cloc
 
 ## Repository Progress
 
-✅ **Implementation and verification completed** — the full-system testbench and exhaustive prefix-adder checks passed. GTKWave waveform screenshots are included above as project demonstration evidence.
+✅ **Implementation and verification completed** — the full-system testbench and exhaustive prefix-adder checks passed. GTKWave waveform screenshots are included below as project demonstration evidence.
 
 ## Project Issues
 
@@ -111,6 +95,22 @@ flowchart TD
 ```
 
 **Data path:** Current count → zero extension → prefix adder (+1) → RUN/HOLD MUX → counter register → 7-segment decoder → display.
+
+## GTKWave Waveform Evidence
+
+The following GTKWave screenshots are placed immediately after the System Architecture section for project presentation.
+
+### Counter Waveform
+
+![Counter waveform](images/Counter-waveform.png)
+
+Shows reset, RUN incrementing, HOLD retaining the current count, and counting resuming after RUN is enabled.
+
+### Full-System Waveform
+
+![Full-system waveform](images/Full_system.png)
+
+Shows the 8-bit prefix-adder inputs and output, clock, counter, expected values, FSM state, reset, RUN control, run enable, and seven-segment output. The trace demonstrates the counter sequence and corresponding display changes.
 
 ## Simulation and Waveform Verification
 
