@@ -34,76 +34,63 @@ module tb_prefix_counter_top;
     endtask
 
     integer i;
-    reg [3:0] previous_count;
 
     initial begin
         $dumpfile("prefix_counter_top.vcd");
         $dumpvars(0, tb_prefix_counter_top);
 
-        // Reset clears count and puts the controller into HOLD.
+        // Synchronous reset clears count and resets the FSM to HOLD.
         reset = 1'b1;
         run = 1'b0;
         @(posedge clk);
         check_count(4'h0, "synchronous reset clears count");
         if (seg !== 7'b1111110) begin
-            $display("FAIL: zero display code incorrect, got %b", seg);
+            $display("FAIL: zero display pattern incorrect: %b", seg);
             $fatal(1);
         end
         $display("PASS: seven-segment decoder displays zero");
 
-        // Deassert reset and request RUN. The FSM registers run_enable,
-        // so wait for the state transition and then check two count updates.
+        // RUN is applied directly to the MUX, so counting starts on the next
+        // rising edge. FSM state/run_enable separately track sampled control.
         @(negedge clk);
         reset = 1'b0;
         run = 1'b1;
         @(posedge clk);
-        #1;
-        if (run_enable !== 1'b1) begin
-            $display("FAIL: FSM did not enter RUN");
+        check_count(4'h1, "RUN increments to one");
+        if (fsm_state !== 1'b1 || run_enable !== 1'b1) begin
+            $display("FAIL: FSM state did not register RUN");
             $fatal(1);
         end
-        check_count(4'h0, "counter still at zero on FSM transition edge");
         @(posedge clk);
-        check_count(4'h1, "prefix-adder path increments to one");
-        @(posedge clk);
-        check_count(4'h2, "prefix-adder path increments to two");
+        check_count(4'h2, "RUN increments to two");
 
-        // Request HOLD; allow the registered FSM state to switch, then verify
-        // the count remains stable for multiple rising clock edges.
+        // HOLD is effective at the next rising edge; no extra increment occurs.
         @(negedge clk);
         run = 1'b0;
         @(posedge clk);
-        #1;
-        if (run_enable !== 1'b0) begin
-            $display("FAIL: FSM did not enter HOLD");
+        check_count(4'h2, "HOLD preserves count immediately");
+        if (fsm_state !== 1'b0 || run_enable !== 1'b0) begin
+            $display("FAIL: FSM state did not register HOLD");
             $fatal(1);
         end
-        check_count(4'h2, "count retained after entering HOLD");
         @(posedge clk);
-        check_count(4'h2, "HOLD retains count on next edge");
+        check_count(4'h2, "HOLD continues to preserve count");
 
-        // Reset and enter RUN again to verify the full modulo-16 count cycle.
+        // Reset and then verify the complete modulo-16 sequence.
         @(negedge clk);
         reset = 1'b1;
         run = 1'b0;
         @(posedge clk);
-        check_count(4'h0, "reset before wraparound test");
+        check_count(4'h0, "reset before wraparound");
         @(negedge clk);
         reset = 1'b0;
         run = 1'b1;
-        @(posedge clk); // FSM samples run and enters RUN
-        #1;
-        if (run_enable !== 1'b1) begin
-            $display("FAIL: FSM failed to re-enter RUN");
-            $fatal(1);
-        end
-        // Starting at 0, the following 16 enabled edges visit 1..15,0.
         for (i = 1; i <= 16; i = i + 1) begin
             @(posedge clk);
-            check_count(i[3:0], "modulo-16 sequence");
+            check_count(i[3:0], "modulo-16 prefix-adder sequence");
         end
 
-        // Check reset priority even if RUN is requested.
+        // Synchronous reset must clear count even with RUN selected.
         @(negedge clk);
         reset = 1'b1;
         run = 1'b1;
