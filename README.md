@@ -62,3 +62,22 @@ Exact module names and segment bit ordering will be documented as implementation
 ## Project Issues
 
 See the [Issues](../../issues) tab for module-level tasks and acceptance criteria.
+## System Architecture
+
+The 4-bit counter value is zero-extended to 8 bits and added to the 8-bit constant 1 by the prefix adder. The lower 4 bits of the incremented result are selected by the RUN/HOLD MUX and stored in the counter register. The register output is sent to the 7-segment decoder.
+
+```mermaid
+flowchart TD
+    A["4-bit Counter"] --> B["Extend to 8 bits"]
+    B --> C["8-bit Prefix Adder"]
+    D["Constant 1"] --> C
+    C --> E["Incremented Result"]
+    A --> F["MUX"]
+    E --> F
+    G["RUN / HOLD"] --> F
+    F --> H["4-bit Counter Register"]
+    H --> I["7-Segment Decoder"]
+    I --> J["Display 0-F"]
+```
+
+**Data path:** Current count → zero extension → prefix adder (+1) → RUN/HOLD MUX → counter register → 7-segment decoder → display.
