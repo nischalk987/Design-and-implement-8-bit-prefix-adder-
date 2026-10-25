@@ -81,3 +81,10 @@ flowchart TD
 ```
 
 **Data path:** Current count → zero extension → prefix adder (+1) → RUN/HOLD MUX → counter register → 7-segment decoder → display.
+
+
+## Simulation and Waveform Evidence
+
+Run the repeatable Icarus Verilog simulation workflow in [GTKWave Waveform Verification](docs/gtkwave-waveform-verification.md). The GitHub Actions workflow uploads generated VCDs as an artifact named `verilog-waveforms`. Download the artifact from the completed Actions run and open `full_system.vcd` or `prefix_counter_top.vcd` in GTKWave.
+
+**Evidence status:** Waveform screenshots and final simulator pass results must be added only after a real local/Actions simulation and GTKWave inspection. See [Issue #10](../../issues/10) for the acceptance checklist.
