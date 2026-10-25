@@ -3,7 +3,9 @@
 ## What is available
 The repository includes testbenches for the full integrated design, standalone prefix adder, and seven-segment decoder. The workflow `.github/workflows/verilog-simulation.yml` installs Icarus Verilog, runs the full-system, top-level, and decoder tests, and uploads generated VCD files as a GitHub Actions artifact.
 
-**Evidence status:** I have added the reproducible workflow and instructions, but I have not executed Icarus Verilog or opened GTKWave in this environment. No real waveform screenshot or measured pass result is claimed by this document. After the workflow runs, inspect the Actions run and download its `verilog-waveforms` artifact.
+**Simulation result (verified):** The GitHub Actions run [Verilog Simulation #4](https://github.com/nischalk987/Design-and-implement-8-bit-prefix-adder-/actions/runs/40185976272) completed successfully. Its logs show all 131,072 prefix-adder cases passed, the full-system RUN/HOLD/reset/wrap/display checks passed, the top-level integration checks passed, and all 16 seven-segment patterns passed. The run uploaded a `verilog-waveforms` artifact containing the generated VCD traces. The waveform artifact is available from the Actions run.
+
+A waveform plot generated from the actual `prefix_counter_top.vcd` is also available in the task output. It is a visualization of the simulator's VCD data, not a screenshot of the GTKWave application. The actual GTKWave GUI inspection/screenshot step still needs to be performed locally if the course specifically requires a GTKWave-window screenshot.
 
 ## Run simulations locally (Ubuntu)
 
@@ -71,7 +73,7 @@ In GTKWave, add the signals below from the hierarchy panel using **Append** (sig
 
 Use zoom-to-fit to see the full trace. Place a marker at the reset edge, a RUN increment, a HOLD interval, and the F-to-0 transition. Confirm the count and segments agree at each point.
 
-## Screenshot evidence to add after local/CI execution
+## Screenshot evidence
 
 Capture the actual GTKWave application window—not a mockup—with the time ruler and the signals above visible. Save the screenshot as `docs/waveforms/full-system-waveform.png` (and optionally `docs/waveforms/wraparound-waveform.png`). Include the matching simulation log or Actions run URL beside it.
 
@@ -81,4 +83,4 @@ Suggested screenshot checklist:
 3. Transition from `1111` to `0000`.
 4. Count-to-seven-segment decode correspondence.
 
-Do not add screenshots or claim successful results until the simulator and GTKWave have actually produced them.
+Keep the real simulator log and VCD artifact with the evidence. Do not present a plot generated from VCD data as a screenshot of GTKWave itself.
