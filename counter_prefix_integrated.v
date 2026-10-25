@@ -1,8 +1,5 @@
 `timescale 1ns/1ps
-// 4-bit counter whose increment path is computed by the 8-bit prefix adder.
-// The counter register still stores only four bits. The 4-bit count is
-// zero-extended to 8 bits, then 8'd1 is added by prefix_adder_8bit.
-// The low four sum bits provide modulo-16 increment behavior.
+
 module counter_prefix_integrated (
     input  wire       clk,
     input  wire       reset,
