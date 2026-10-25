@@ -44,6 +44,27 @@ Exact module names and segment bit ordering will be documented as implementation
 - Icarus Verilog
 - GTKWave
 
+## Verification Results
+
+The full-system testbench completed successfully.
+
+- **Prefix-adder exhaustive verification:** all **131,072** tested cases matched the expected result.
+- **Reset:** count cleared to 0 and the display decoded 0.
+- **RUN:** counter incremented correctly.
+- **HOLD:** counter retained its current value (5 in the directed test).
+- **RUN resume:** counter continued from the held value (6).
+- **Hexadecimal sequence:** counter/display checks passed from 0 through F and wrapped back to 0.
+- **Reset priority:** reset correctly took priority over RUN.
+- **Final testbench status:** `ALL FULL-SYSTEM AND PREFIX-ADDER TESTS PASSED`.
+
+### GTKWave waveform
+
+The counter waveform was inspected in GTKWave with these signals:
+
+`clk`, `reset`, `run`, `run_enable`, `fsm_state`, `count[3:0]`, and `seg[6:0]`.
+
+The displayed trace shows reset, RUN counting, HOLD preserving the count, and RUN resuming. The count labels progress through the tested hexadecimal values, and the seven-segment output changes with the count. The waveform screenshot can be added to this section once the PNG is committed to the repository.
+
 ## Verification Plan
 
 1. Test the 8-bit prefix adder independently with representative inputs, carry propagation, and overflow.
@@ -57,11 +78,12 @@ Exact module names and segment bit ordering will be documented as implementation
 
 ## Repository Progress
 
-🚧 **In progress** — implementation and verification tasks are tracked in GitHub Issues.
+✅ **Implementation and verification completed** — the full-system testbench and exhaustive prefix-adder checks passed. Additional documentation and waveform artifacts may be added as needed.
 
 ## Project Issues
 
 See the [Issues](../../issues) tab for module-level tasks and acceptance criteria.
+
 ## System Architecture
 
 The 4-bit counter value is zero-extended to 8 bits and added to the 8-bit constant 1 by the prefix adder. The lower 4 bits of the incremented result are selected by the RUN/HOLD MUX and stored in the counter register. The register output is sent to the 7-segment decoder.
