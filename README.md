@@ -57,13 +57,21 @@ The full-system testbench completed successfully.
 - **Reset priority:** reset correctly took priority over RUN.
 - **Final testbench status:** `ALL FULL-SYSTEM AND PREFIX-ADDER TESTS PASSED`.
 
-### GTKWave waveform
+## GTKWave Waveform Evidence
 
-The counter waveform was inspected in GTKWave with these signals:
+The following screenshots are from the GTKWave simulation and show the counter integration and complete system behavior.
 
-`clk`, `reset`, `run`, `run_enable`, `fsm_state`, `count[3:0]`, and `seg[6:0]`.
+### Counter Waveform
 
-The displayed trace shows reset, RUN counting, HOLD preserving the count, and RUN resuming. The count labels progress through the tested hexadecimal values, and the seven-segment output changes with the count. The waveform screenshot can be added to this section once the PNG is committed to the repository.
+![Counter waveform](images/Counter-waveform.png)
+
+The counter waveform demonstrates reset, RUN incrementing, HOLD retaining the current count, and the counter continuing after RUN resumes.
+
+### Full-System Waveform
+
+![Full-system waveform](images/Full_system.png)
+
+The full-system waveform includes the 8-bit prefix-adder inputs and output, clock, counter, expected values, FSM state, reset, RUN control, run enable, and seven-segment output. The displayed trace shows the count sequence and corresponding display changes.
 
 ## Verification Plan
 
@@ -78,7 +86,7 @@ The displayed trace shows reset, RUN counting, HOLD preserving the count, and RU
 
 ## Repository Progress
 
-✅ **Implementation and verification completed** — the full-system testbench and exhaustive prefix-adder checks passed. Additional documentation and waveform artifacts may be added as needed.
+✅ **Implementation and verification completed** — the full-system testbench and exhaustive prefix-adder checks passed. GTKWave waveform screenshots are included above as project demonstration evidence.
 
 ## Project Issues
 
@@ -104,8 +112,7 @@ flowchart TD
 
 **Data path:** Current count → zero extension → prefix adder (+1) → RUN/HOLD MUX → counter register → 7-segment decoder → display.
 
-
-## Simulation and Waveform Evidence
+## Simulation and Waveform Verification
 
 Run the repeatable Icarus Verilog simulation workflow in [GTKWave Waveform Verification](docs/gtkwave-waveform-verification.md). The GitHub Actions workflow uploads generated VCDs as an artifact named `verilog-waveforms`. Download the artifact from the completed Actions run and open `full_system.vcd` or `prefix_counter_top.vcd` in GTKWave.
 
