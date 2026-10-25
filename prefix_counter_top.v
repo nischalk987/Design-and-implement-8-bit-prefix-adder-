@@ -1,9 +1,10 @@
 `timescale 1ns/1ps
 // Top-level design for the Level 2 counter + 8-bit prefix adder mini-project.
 //
-// RUN/HOLD FSM drives run_enable. The 4-bit current count is zero-extended
-// and incremented by the 8-bit prefix adder. A 4-bit mux selects incremented
-// count in RUN or current count in HOLD. The selected value is registered,
+// RUN/HOLD FSM tracks the sampled control state. The raw run input controls
+// the combinational counter MUX so RUN/HOLD takes effect on the next active
+// counter edge without an extra enable-cycle delay. The 4-bit current count is
+// zero-extended and incremented by the 8-bit prefix adder. The selected value is registered,
 // and the registered count is decoded for a common-cathode seven-segment
 // display (seg[6:0] = {a,b,c,d,e,f,g}).
 module prefix_counter_top (
@@ -44,7 +45,7 @@ module prefix_counter_top (
     run_hold_mux_4bit next_count_mux (
         .count_current(count),
         .count_incremented(incremented_sum[3:0]),
-        .run(run_enable),
+        .run(run),
         .next_count(next_count)
     );
 
