@@ -16,7 +16,7 @@ sudo apt-get update
 sudo apt-get install -y iverilog gtkwave
 ```
 
-Run the full-system testbench (includes independent exhaustive adder checks):
+Run the full-system testbench (RUN/HOLD, wraparound, display, and directed adder checks):
 
 ```bash
 iverilog -g2012 -s tb_full_system -o full_system_test \
@@ -30,13 +30,21 @@ iverilog -g2012 -s tb_full_system -o full_system_test \
 vvp full_system_test
 ```
 
-Successful output should end with:
+The testbench writes `full_system.vcd` and should report:
 
 ```text
-ALL FULL-SYSTEM AND PREFIX-ADDER TESTS PASSED
+ALL FULL-SYSTEM AND DIRECTED PREFIX-ADDER TESTS PASSED
 ```
 
-The command produces `full_system.vcd`. Also run the more focused integration test:
+Run the standalone testbench separately to exhaustively check all 131,072 combinations:
+
+```bash
+iverilog -g2012 -s tb_prefix_adder_8bit -o prefix_adder_test \
+  prefix_adder_8bit.v tb_prefix_adder_8bit.v
+vvp prefix_adder_test
+```
+
+Separating this long sweep keeps the full-system counter and display waveform readable. Also run the more focused integration test:
 
 ```bash
 iverilog -g2012 -s tb_prefix_counter_top -o top_test \
@@ -70,8 +78,10 @@ In GTKWave, add the signals below from the hierarchy panel using **Append** (sig
 - `next_count[3:0]`: selects low four sum bits in RUN, current count in HOLD.
 - `seg[6:0]`: follows the decoder pattern for the registered count; for zero it should be `1111110` with `seg[6:0]={a,b,c,d,e,f,g}`.
 - `run_enable` and `fsm_state`: FSM state/status outputs.
+- `expected_count[3:0]`: reference value checked by the testbench.
+- `adder_a[7:0]`, `adder_b[7:0]`, `adder_cin`, `adder_sum[7:0]`, `adder_cout`, and `expected_add[8:0]`: directed standalone-adder examples.
 
-Use zoom-to-fit to see the full trace. Place a marker at the reset edge, a RUN increment, a HOLD interval, and the F-to-0 transition. Confirm the count and segments agree at each point.
+The current full-system trace is approximately 286 ns. Display 0–286 ns for the complete sequence; 0–120 ns shows initial reset, RUN, HOLD, resume, and the reset before wraparound, while approximately 110–286 ns shows the complete 0-to-F sequence, wraparound, and reset priority. At 0 ns the synchronous-reset count, FSM, and decoded segment output can be X until the first rising edge at 5 ns; check that they become known after that reset edge.
 
 ## Screenshot evidence
 

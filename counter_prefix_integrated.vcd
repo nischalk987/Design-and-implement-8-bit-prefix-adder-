@@ -1,0 +1,639 @@
+$date
+	Sun Oct 25 18:23:53 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_counter_prefix_integrated $end
+$var wire 4 ! count [3:0] $end
+$var reg 1 " clk $end
+$var reg 1 # reset $end
+$var reg 1 $ run $end
+$var integer 32 % i [31:0] $end
+$scope module dut $end
+$var wire 1 " clk $end
+$var wire 1 # reset $end
+$var wire 1 $ run $end
+$var wire 4 & selected_next_count [3:0] $end
+$var wire 8 ' incremented_sum [7:0] $end
+$var wire 8 ( count_extended [7:0] $end
+$var wire 1 ) adder_cout $end
+$var reg 4 * count [3:0] $end
+$scope module increment_adder $end
+$var wire 8 + A [7:0] $end
+$var wire 8 , B [7:0] $end
+$var wire 1 - cin $end
+$var wire 8 . g0 [7:0] $end
+$var wire 8 / p0 [7:0] $end
+$var wire 8 0 sum [7:0] $end
+$var wire 8 1 p3 [7:0] $end
+$var wire 8 2 p2 [7:0] $end
+$var wire 8 3 p1 [7:0] $end
+$var wire 8 4 g3 [7:0] $end
+$var wire 8 5 g2 [7:0] $end
+$var wire 8 6 g1 [7:0] $end
+$var wire 1 ) cout $end
+$var wire 8 7 carry [7:0] $end
+$scope begin PREFIX_1[0] $end
+$var parameter 2 8 i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_1[1] $end
+$var parameter 2 9 i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_1[2] $end
+$var parameter 3 : i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_1[3] $end
+$var parameter 3 ; i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_1[4] $end
+$var parameter 4 < i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_1[5] $end
+$var parameter 4 = i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_1[6] $end
+$var parameter 4 > i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_1[7] $end
+$var parameter 4 ? i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_2[0] $end
+$var parameter 2 @ i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_2[1] $end
+$var parameter 2 A i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_2[2] $end
+$var parameter 3 B i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_2[3] $end
+$var parameter 3 C i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_2[4] $end
+$var parameter 4 D i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_2[5] $end
+$var parameter 4 E i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_2[6] $end
+$var parameter 4 F i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_2[7] $end
+$var parameter 4 G i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_4[0] $end
+$var parameter 2 H i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_4[1] $end
+$var parameter 2 I i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_4[2] $end
+$var parameter 3 J i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_4[3] $end
+$var parameter 3 K i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_4[4] $end
+$var parameter 4 L i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_4[5] $end
+$var parameter 4 M i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_4[6] $end
+$var parameter 4 N i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$scope begin PREFIX_4[7] $end
+$var parameter 4 O i $end
+$scope begin genblk1 $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope task check_count $end
+$var reg 4 P expected [3:0] $end
+$var reg 384 Q test_name [383:0] $end
+$upscope $end
+$scope task tick $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b111 O
+b110 N
+b101 M
+b100 L
+b11 K
+b10 J
+b1 I
+b0 H
+b111 G
+b110 F
+b101 E
+b100 D
+b11 C
+b10 B
+b1 A
+b0 @
+b111 ?
+b110 >
+b101 =
+b100 <
+b11 ;
+b10 :
+b1 9
+b0 8
+$end
+#0
+$dumpvars
+bx Q
+bx P
+b0xxxx 7
+b0xx 6
+b0xxxx 5
+b0xxxx 4
+b0xxxx 3
+b0xxxx 2
+b0xxxx 1
+b0xxxxx 0
+b0xxxx /
+b0x .
+0-
+b1 ,
+b0xxxx +
+bx *
+0)
+b0xxxx (
+b0xxxxx '
+bx &
+bx %
+1$
+1#
+0"
+bx !
+$end
+#5000
+b1 1
+b0 4
+b1 2
+b0 5
+b1 &
+b0 7
+b1 3
+b1 '
+b1 0
+b0 6
+b1 /
+b0 .
+b0 (
+b0 +
+b0 !
+b0 *
+1"
+#6000
+b11100100110010101110011011001010111010000100000011000110110110001100101011000010111001001110011001000000110001101101111011101010110111001110100 Q
+b0 P
+#10000
+0#
+0"
+#15000
+b0 1
+b1 4
+b0 2
+b1 5
+b10 &
+b1 7
+b0 3
+b10 '
+b10 0
+b1 6
+b0 /
+b1 .
+b1 (
+b1 +
+b1 !
+b1 *
+1"
+#16000
+b1010010010101010100111000100000011010010110111001100011011100100110010101101101011001010110111001110100011100110010000001110100011011110010000000110001 Q
+b1 P
+#20000
+0"
+#25000
+b11 1
+b0 4
+b11 2
+b0 5
+b11 &
+b0 7
+b11 3
+b11 '
+b11 0
+b0 6
+b11 /
+b0 .
+b10 (
+b10 +
+b10 !
+b10 *
+1"
+#26000
+b1010010010101010100111000100000011010010110111001100011011100100110010101101101011001010110111001110100011100110010000001110100011011110010000000110010 Q
+b10 P
+#30000
+b10 &
+0$
+0"
+#35000
+1"
+#36000
+b100100001001111010011000100010000100000011100100110010101110100011000010110100101101110011100110010000000110010 Q
+#40000
+0"
+#45000
+1"
+#46000
+b100100001001111010011000100010000100000011000110110111101101110011101000110100101101110011101010110010101110011001000000111001001100101011101000110000101101001011011100110100101101110011001110010000000110010 Q
+#50000
+b11 &
+b11 %
+1$
+0"
+#55000
+b0 1
+b11 4
+b0 2
+b11 5
+b100 &
+b11 7
+b0 3
+b100 '
+b100 0
+b11 6
+b10 /
+b1 .
+b11 (
+b11 +
+b11 !
+b11 *
+1"
+#56000
+b100 %
+b1110000011100100110010101100110011010010111100000101101011000010110010001100100011001010111001000100000011010010110111001100011011100100110010101101101011001010110111001110100001000000111001101100101011100010111010101100101011011100110001101100101 Q
+b11 P
+#60000
+0"
+#65000
+b1 1
+b0 4
+b1 2
+b0 5
+b101 &
+b0 7
+b1 3
+b101 '
+b101 0
+b0 6
+b101 /
+b0 .
+b100 (
+b100 +
+b100 !
+b100 *
+1"
+#66000
+b101 %
+b100 P
+#70000
+0"
+#75000
+b0 1
+b1 4
+b0 2
+b1 5
+b110 &
+b1 7
+b0 3
+b110 '
+b110 0
+b1 6
+b100 /
+b1 .
+b101 (
+b101 +
+b101 !
+b101 *
+1"
+#76000
+b110 %
+b101 P
+#80000
+0"
+#85000
+b111 1
+b0 4
+b111 2
+b0 5
+b111 &
+b0 7
+b111 3
+b111 '
+b111 0
+b0 6
+b111 /
+b0 .
+b110 (
+b110 +
+b110 !
+b110 *
+1"
+#86000
+b111 %
+b110 P
+#90000
+0"
+#95000
+b0 1
+b111 4
+b0 2
+b111 5
+b1000 &
+b111 7
+b100 3
+b1000 '
+b1000 0
+b11 6
+b110 /
+b1 .
+b111 (
+b111 +
+b111 !
+b111 *
+1"
+#96000
+b1000 %
+b111 P
+#100000
+0"
+#105000
+b1 1
+b0 4
+b1 2
+b0 5
+b1001 &
+b0 7
+b1 3
+b1001 '
+b1001 0
+b0 6
+b1001 /
+b0 .
+b1000 (
+b1000 +
+b1000 !
+b1000 *
+1"
+#106000
+b1001 %
+b1000 P
+#110000
+0"
+#115000
+b0 1
+b1 4
+b0 2
+b1 5
+b1010 &
+b1 7
+b0 3
+b1010 '
+b1010 0
+b1 6
+b1000 /
+b1 .
+b1001 (
+b1001 +
+b1001 !
+b1001 *
+1"
+#116000
+b1010 %
+b1001 P
+#120000
+0"
+#125000
+b11 1
+b0 4
+b11 2
+b0 5
+b1011 &
+b0 7
+b11 3
+b1011 '
+b1011 0
+b0 6
+b1011 /
+b0 .
+b1010 (
+b1010 +
+b1010 !
+b1010 *
+1"
+#126000
+b1011 %
+b1010 P
+#130000
+0"
+#135000
+b0 1
+b11 4
+b0 2
+b11 5
+b1100 &
+b11 7
+b0 3
+b1100 '
+b1100 0
+b11 6
+b1010 /
+b1 .
+b1011 (
+b1011 +
+b1011 !
+b1011 *
+1"
+#136000
+b1100 %
+b1011 P
+#140000
+0"
+#145000
+b1 1
+b0 4
+b1 2
+b0 5
+b1101 &
+b0 7
+b1001 3
+b1101 '
+b1101 0
+b0 6
+b1101 /
+b0 .
+b1100 (
+b1100 +
+b1100 !
+b1100 *
+1"
+#146000
+b1101 %
+b1100 P
+#150000
+0"
+#155000
+b0 1
+b1 4
+b0 2
+b1 5
+b1110 &
+b1 7
+b1000 3
+b1110 '
+b1110 0
+b1 6
+b1100 /
+b1 .
+b1101 (
+b1101 +
+b1101 !
+b1101 *
+1"
+#156000
+b1110 %
+b1101 P
+#160000
+0"
+#165000
+b1111 1
+b0 4
+b1111 2
+b0 5
+b1111 &
+b0 7
+b1111 3
+b1111 '
+b1111 0
+b0 6
+b1111 /
+b0 .
+b1110 (
+b1110 +
+b1110 !
+b1110 *
+1"
+#166000
+b1111 %
+b1110 P
+#170000
+0"
+#175000
+b0 1
+b1111 4
+b0 2
+b1111 5
+b0 &
+b1111 7
+b1100 3
+b10000 '
+b10000 0
+b11 6
+b1110 /
+b1 .
+b1111 (
+b1111 +
+b1111 !
+b1111 *
+1"
+#176000
+b10000 %
+b1111 P
+#180000
+0"
+#185000
+b1 1
+b0 4
+b1 2
+b0 5
+b1 &
+b0 7
+b1 3
+b1 '
+b1 0
+b0 6
+b1 /
+b0 .
+b0 (
+b0 +
+b0 !
+b0 *
+1"
+#186000
+b111011101110010011000010111000001110011001000000011000100110101001000000111010001101111001000000011000000100000011101010111001101101001011011100110011100100000011011000110111101110111001000000111001101110101011011010010000001100010011010010111010001110011 Q
+b0 P
+#190000
+1#
+0"
+#195000
+1"
+#196000
+b1110010011001010111001101100101011101000010000001101111011101100110010101110010011100100110100101100100011001010111001100100000010100100101010101001110 Q

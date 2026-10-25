@@ -1,0 +1,39 @@
+[*]
+[*] GTKWave Analyzer v3.3.127 (w)1999-2026 BSI
+[*] Sun Oct 25 13:35:40 2026
+[*]
+[dumpfile] "C:\Users\Nischal\Desktop\Design-and-implement-8-bit-prefix-adder-\full_system.vcd"
+[dumpfile_mtime] "Sun Oct 25 13:27:15 2026"
+[dumpfile_size] 17414
+[savefile] "C:\Users\Nischal\Desktop\Design-and-implement-8-bit-prefix-adder-\full_system_waveform.gtkw"
+[timestart] 10000
+[size] 1920 959
+[pos] -65 -62
+*-15.398829 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 310
+[signals_width] 315
+[sst_expanded] 1
+[sst_vpaned_height] 279
+@22
+tb_full_system.adder_a[7:0]
+tb_full_system.adder_b[7:0]
+@28
+tb_full_system.adder_cin
+tb_full_system.adder_cout
+@22
+tb_full_system.adder_sum[7:0]
+@28
+tb_full_system.clk
+@22
+tb_full_system.count[3:0]
+tb_full_system.expected_add[8:0]
+tb_full_system.expected_count[3:0]
+@28
+tb_full_system.fsm_state
+tb_full_system.reset
+tb_full_system.run
+tb_full_system.run_enable
+@22
+tb_full_system.seg[6:0]
+[pattern_trace] 1
+[pattern_trace] 0

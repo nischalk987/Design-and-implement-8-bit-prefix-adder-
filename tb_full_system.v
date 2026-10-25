@@ -2,8 +2,9 @@
 
 module tb_full_system;
     reg clk = 1'b0;
-    reg reset = 1'b0;
+    reg reset = 1'b1;
     reg run = 1'b0;
+
     wire [3:0] count;
     wire [6:0] seg;
     wire run_enable;
@@ -11,7 +12,7 @@ module tb_full_system;
 
     integer errors = 0;
     integer i;
-    reg [3:0] expected_count;
+    reg [3:0] expected_count = 4'h0;
 
     prefix_counter_top dut (
         .clk(clk),
@@ -52,45 +53,31 @@ module tb_full_system;
     task check_count(input [3:0] expected, input [8*56-1:0] label_text);
         begin
             #1;
-            if (^count === 1'bx) begin
-                $display("FAIL: %0s count contains X/Z: %b", label_text, count);
-                errors = errors + 1;
-            end else if (count !== expected) begin
-                $display("FAIL: %0s expected count=%h actual=%h",
+            if ((^count === 1'bx) || (count !== expected)) begin
+                $display("FAIL: %0s expected count=%h actual=%b",
                          label_text, expected, count);
                 errors = errors + 1;
-            end else begin
-                $display("PASS: %0s count=%h", label_text, count);
             end
-
-            if (^seg === 1'bx) begin
-                $display("FAIL: %0s seg contains X/Z: %b", label_text, seg);
-                errors = errors + 1;
-            end else if (seg !== expected_segments(expected)) begin
+            if ((^seg === 1'bx) || (seg !== expected_segments(expected))) begin
                 $display("FAIL: %0s expected seg=%b actual=%b",
                          label_text, expected_segments(expected), seg);
                 errors = errors + 1;
-            end else begin
-                $display("PASS: %0s display=%b", label_text, seg);
             end
-
-            if ((^run_enable === 1'bx) || (^fsm_state === 1'bx)) begin
-                $display("FAIL: FSM debug outputs contain X/Z");
+            if ((run_enable !== (reset ? 1'b0 : run)) ||
+                (fsm_state !== (reset ? 1'b0 : run))) begin
+                $display("FAIL: %0s expected FSM state/enable=%b actual=%b/%b",
+                         label_text, (reset ? 1'b0 : run), fsm_state, run_enable);
                 errors = errors + 1;
             end
         end
     endtask
 
-    // Independent combinational check of the actual prefix-adder module.
-    reg [7:0] adder_a;
-    reg [7:0] adder_b;
-    reg adder_cin;
+    reg [7:0] adder_a = 8'h00;
+    reg [7:0] adder_b = 8'h00;
+    reg adder_cin = 1'b0;
     wire [7:0] adder_sum;
     wire adder_cout;
     reg [8:0] expected_add;
-    integer a;
-    integer b;
-    integer c;
     integer adder_errors = 0;
 
     prefix_adder_8bit standalone_adder (
@@ -108,7 +95,7 @@ module tb_full_system;
             adder_cin = cinv;
             expected_add = {1'b0, av} + {1'b0, bv} + cinv;
             #1;
-            if ((^adder_sum === 1'bx) || (adder_cout === 1'bx)) begin
+            if ((^{adder_cout, adder_sum}) === 1'bx) begin
                 $display("FAIL ADDER: X/Z for A=%h B=%h cin=%b", av, bv, cinv);
                 adder_errors = adder_errors + 1;
             end else if ({adder_cout, adder_sum} !== expected_add) begin
@@ -122,41 +109,17 @@ module tb_full_system;
     initial begin
         $dumpfile("full_system.vcd");
         $dumpvars(0, tb_full_system);
-        adder_a = 0;
-        adder_b = 0;
-        adder_cin = 0;
 
-        $display("=== Independent 8-bit prefix-adder directed checks ===");
+        // Apply a rising reset edge before checking any design outputs.
+        @(posedge clk);
+        check_count(4'h0, "initial synchronous reset");
+
+        // Directed adder activity is included in this readable system trace.
         check_adder(8'h00, 8'h00, 1'b0);
-        check_adder(8'h00, 8'h00, 1'b1);
-        check_adder(8'h01, 8'h01, 1'b0);
         check_adder(8'h0F, 8'h01, 1'b0);
-        check_adder(8'h55, 8'hAA, 1'b0);
+        check_adder(8'h7F, 8'h01, 1'b0);
         check_adder(8'hFF, 8'h01, 1'b0);
         check_adder(8'hFF, 8'hFF, 1'b1);
-        check_adder(8'h7F, 8'h01, 1'b0);
-
-        $display("=== Exhaustive 8-bit prefix-adder verification ===");
-        for (a = 0; a < 256; a = a + 1) begin
-            for (b = 0; b < 256; b = b + 1) begin
-                check_adder(a[7:0], b[7:0], 1'b0);
-                check_adder(a[7:0], b[7:0], 1'b1);
-            end
-        end
-        if (adder_errors != 0) begin
-            $display("FAIL: standalone adder errors=%0d", adder_errors);
-            $fatal(1);
-        end
-        $display("PASS: all 131072 prefix-adder cases matched");
-
-        $display("=== Full-system RUN/HOLD counter/display checks ===");
-        // Synchronous active-high reset.
-        reset = 1'b1;
-        run = 1'b0;
-        @(posedge clk);
-        check_count(4'h0, "reset sets count to zero");
-
-        // RUN increments once per active edge; prefix-adder output is selected.
         @(negedge clk);
         reset = 1'b0;
         run = 1'b1;
@@ -167,61 +130,56 @@ module tb_full_system;
             check_count(expected_count, "RUN increment");
         end
 
-        // HOLD preserves current value for several active clock edges.
         @(negedge clk);
         run = 1'b0;
         expected_count = count;
         repeat (3) begin
             @(posedge clk);
-            check_count(expected_count, "HOLD preserves current count");
+            check_count(expected_count, "HOLD preserves count");
         end
 
-        // Resume from the held value and check it increments again.
         @(negedge clk);
         run = 1'b1;
         @(posedge clk);
         expected_count = expected_count + 4'h1;
-        check_count(expected_count, "RUN resumes from held value");
+        check_count(expected_count, "RUN resumes from HOLD");
 
-        // Reset and test the complete 0..15 then 0 wrap sequence.
+        // Reset, then show every count value including F-to-0 wraparound.
         @(negedge clk);
         reset = 1'b1;
         run = 1'b0;
         @(posedge clk);
-        check_count(4'h0, "reset before wrap test");
+        expected_count = 4'h0;
+        check_count(expected_count, "reset before wraparound");
+
         @(negedge clk);
         reset = 1'b0;
         run = 1'b1;
-        expected_count = 4'h0;
         for (i = 1; i <= 16; i = i + 1) begin
             @(posedge clk);
             expected_count = expected_count + 4'h1;
             check_count(expected_count, "wraparound sequence");
         end
-        if (expected_count !== 4'h0) begin
-            $display("FAIL: reference counter did not wrap to zero");
-            errors = errors + 1;
-        end
 
-        // Reset takes priority even with RUN asserted.
         @(negedge clk);
         reset = 1'b1;
         run = 1'b1;
         @(posedge clk);
-        check_count(4'h0, "reset priority over RUN");
+        expected_count = 4'h0;
+        check_count(expected_count, "reset priority over RUN");
 
         if ((errors == 0) && (adder_errors == 0)) begin
-            $display("ALL FULL-SYSTEM AND PREFIX-ADDER TESTS PASSED");
+            $display("ALL FULL-SYSTEM AND DIRECTED PREFIX-ADDER TESTS PASSED");
             $finish;
         end else begin
-            $display("FAIL: system errors=%0d adder errors=%0d", errors, adder_errors);
+            $display("FAIL: system errors=%0d adder errors=%0d",
+                     errors, adder_errors);
             $fatal(1);
         end
     end
 
-    // Guard against a broken/stalled simulation.
     initial begin
-        #2000000;
+        #2000;
         $display("FAIL: testbench timeout");
         $fatal(1);
     end
