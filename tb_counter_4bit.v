@@ -45,7 +45,6 @@ module tb_counter_4bit;
         tick();
         check_count(4'h0, "synchronous reset clears count");
 
-        // Reset deasserted; enabled edges increment.
         @(negedge clk);
         reset = 1'b0;
         increment_enable = 1'b1;
@@ -54,7 +53,6 @@ module tb_counter_4bit;
         tick();
         check_count(4'h2, "second increment");
 
-        // Disabled edges hold the prior value.
         @(negedge clk);
         increment_enable = 1'b0;
         tick();
