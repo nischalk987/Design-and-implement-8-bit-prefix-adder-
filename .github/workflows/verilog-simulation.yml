@@ -1,0 +1,47 @@
+name: Verilog Simulation
+
+on:
+  push:
+    branches: [main, "issue-*/*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Icarus Verilog
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog
+
+      - name: Run full-system and exhaustive prefix-adder testbench
+        run: |
+          iverilog -g2012 -s tb_full_system -o full_system_test             prefix_adder_8bit.v             run_hold_fsm.v             run_hold_mux_4bit.v             seven_segment_hex_decoder.v             prefix_counter_top.v             tb_full_system.v
+          vvp full_system_test
+
+      - name: Run top-level integration testbench
+        run: |
+          iverilog -g2012 -s tb_prefix_counter_top -o top_test             prefix_adder_8bit.v             run_hold_fsm.v             run_hold_mux_4bit.v             seven_segment_hex_decoder.v             prefix_counter_top.v             tb_prefix_counter_top.v
+          vvp top_test
+
+      - name: Run seven-segment decoder testbench
+        run: |
+          iverilog -g2012 -s tb_seven_segment_hex_decoder -o decoder_test             seven_segment_hex_decoder.v             tb_seven_segment_hex_decoder.v
+          vvp decoder_test
+
+      - name: Save simulation VCDs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verilog-waveforms
+          path: |
+            full_system.vcd
+            prefix_counter_top.vcd
+            prefix_adder_8bit.vcd
+            seven_segment_hex_decoder.vcd
+          if-no-files-found: warn
