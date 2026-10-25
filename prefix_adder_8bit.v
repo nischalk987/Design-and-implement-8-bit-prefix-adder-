@@ -1,4 +1,3 @@
-// 8-bit parallel-prefix adder (Kogge-Stone style), Verilog-2001.
 module prefix_adder_8bit (
     input  wire [7:0] A,
     input  wire [7:0] B,
@@ -43,7 +42,6 @@ module prefix_adder_8bit (
         end
     endgenerate
 
-    // Group carry outputs including carry-in.
     assign carry[0] = g0[0] | (p0[0] & cin);
     assign carry[1] = g1[1] | (p1[1] & cin);
     assign carry[2] = g2[2] | (p2[2] & cin);
