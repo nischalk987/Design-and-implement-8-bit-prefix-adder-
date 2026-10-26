@@ -128,3 +128,110 @@ Shows the 8-bit prefix-adder inputs and output, clock, counter, expected values,
 Run the repeatable Icarus Verilog simulation workflow in [GTKWave Waveform Verification](docs/gtkwave-waveform-verification.md). The GitHub Actions workflow uploads generated VCDs as an artifact named `verilog-waveforms`. Download the artifact from the completed Actions run and open `full_system.vcd` or `prefix_counter_top.vcd` in GTKWave.
 
 **Simulation evidence:** [GitHub Actions run #4](https://github.com/nischalk987/Design-and-implement-8-bit-prefix-adder-/actions/runs/40185976272) completed successfully: the full-system suite passed, the prefix adder matched all 131,072 arithmetic combinations, the top-level testbench passed, and all 16 decoder patterns passed. The run uploaded the `verilog-waveforms` VCD artifact. See [GTKWave Waveform Verification](docs/gtkwave-waveform-verification.md) for signals and screenshot guidance. The generated VCD plot is a visualization of real simulator data, not a GTKWave GUI screenshot.
+
+
+## 7-Segment Decoder K-Maps and Boolean Equations
+
+This section records the 4-variable K-map values, minterms, and Boolean equations for the seven active-high outputs of the common-cathode hexadecimal decoder. Inputs are **A (MSB), B, C, D (LSB)**. K-map rows and columns use Gray-code order **00, 01, 11, 10**.
+
+### K-map layout
+
+| AB \\ CD | 00 | 01 | 11 | 10 |
+|---|---:|---:|---:|---:|
+| 00 | m0 | m1 | m3 | m2 |
+| 01 | m4 | m5 | m7 | m6 |
+| 11 | m12 | m13 | m15 | m14 |
+| 10 | m8 | m9 | m11 | m10 |
+
+### Segment a
+
+| AB \\ CD | 00 | 01 | 11 | 10 |
+|---|---:|---:|---:|---:|
+| 00 | 1 | 0 | 1 | 1 |
+| 01 | 0 | 1 | 1 | 1 |
+| 11 | 1 | 0 | 1 | 1 |
+| 10 | 1 | 1 | 1 | 1 |
+
+Minterms: \(a=\Sigma m(0,2,3,5,6,7,8,9,10,12,13,14,15)\)
+
+Boolean equation: \(a=C+AB'+AD'+B'D'+A'BD\)
+
+### Segment b
+
+| AB \\ CD | 00 | 01 | 11 | 10 |
+|---|---:|---:|---:|---:|
+| 00 | 1 | 1 | 1 | 1 |
+| 01 | 1 | 0 | 1 | 0 |
+| 11 | 1 | 0 | 0 | 0 |
+| 10 | 1 | 1 | 1 | 1 |
+
+Minterms: \(b=\Sigma m(0,1,2,3,4,7,8,9,10,13)\)
+
+Boolean equation: \(b=B'+C'D'+A'CD\)
+
+### Segment c
+
+| AB \\ CD | 00 | 01 | 11 | 10 |
+|---|---:|---:|---:|---:|
+| 00 | 1 | 1 | 0 | 1 |
+| 01 | 1 | 1 | 1 | 1 |
+| 11 | 0 | 1 | 0 | 0 |
+| 10 | 1 | 1 | 1 | 1 |
+
+Minterms: \(c=\Sigma m(0,1,3,4,5,6,7,8,9,10,11,13)\)
+
+Boolean equation: \(c=AB'+A'B+D'C'+A'D'\)
+
+### Segment d
+
+| AB \\ CD | 00 | 01 | 11 | 10 |
+|---|---:|---:|---:|---:|
+| 00 | 1 | 0 | 1 | 1 |
+| 01 | 0 | 1 | 0 | 1 |
+| 11 | 1 | 1 | 0 | 1 |
+| 10 | 1 | 1 | 1 | 0 |
+
+Minterms: \(d=\Sigma m(0,2,3,5,6,8,9,11,12,13,14)\)
+
+Boolean equation: \(d=AC'+BC'D+BCD'+B'CD+A'B'D'\)
+
+### Segment e
+
+| AB \\ CD | 00 | 01 | 11 | 10 |
+|---|---:|---:|---:|---:|
+| 00 | 1 | 0 | 0 | 1 |
+| 01 | 0 | 0 | 0 | 1 |
+| 11 | 1 | 1 | 1 | 1 |
+| 10 | 1 | 0 | 1 | 1 |
+
+Minterms: \(e=\Sigma m(0,2,6,8,10,11,12,13,14,15)\)
+
+Boolean equation: \(e=AB+AC+CD'+B'D'\)
+
+### Segment f
+
+| AB \\ CD | 00 | 01 | 11 | 10 |
+|---|---:|---:|---:|---:|
+| 00 | 1 | 0 | 0 | 0 |
+| 01 | 1 | 1 | 0 | 1 |
+| 11 | 1 | 0 | 1 | 1 |
+| 10 | 1 | 1 | 1 | 1 |
+
+Minterms: \(f=\Sigma m(0,4,5,6,8,9,10,11,12,14,15)\)
+
+Boolean equation: \(f=AC+AB'+BD'+C'D'+A'BC'\)
+
+### Segment g
+
+| AB \\ CD | 00 | 01 | 11 | 10 |
+|---|---:|---:|---:|---:|
+| 00 | 0 | 0 | 1 | 1 |
+| 01 | 1 | 1 | 0 | 1 |
+| 11 | 0 | 1 | 1 | 1 |
+| 10 | 1 | 1 | 1 | 1 |
+
+Minterms: \(g=\Sigma m(2,3,4,5,6,8,9,10,11,13,14,15)\)
+
+Boolean equation: \(g=AD+AB'+CB'+CD'+A'BC'\)
+
+**K-map grouping note:** Groups must contain 1, 2, 4, or 8 adjacent cells and cover every ON minterm. Groups may overlap. Prime implicants are maximal valid groups; essential prime implicants cover at least one minterm not covered by any other prime implicant. Confirm the group selection and equations against the decoder truth table before treating this section as final.
